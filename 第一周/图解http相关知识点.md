@@ -8,24 +8,24 @@
 
 #### 二、TCP/IP的分层
 
-![TCP/IP的分层](./images/http/http-1.jpg)
+![TCP/IP的分层](../images/http/http-1.jpg)
 
 `面试题：TCP/IP协议族按层次划分了哪几次？每一层次的功能是什么`
 
 
 #### 三、TCP/IP通信传输流
 
-![TCP/IP通信传输流](./images/http/http-2.jpg)
+![TCP/IP通信传输流](../images/http/http-2.jpg)
 
 `面试题：TCP/IP通信传输流`
 
 各个头部包含的信息：
 
-![头部信息](./images/http/http-3.png)
+![头部信息](../images/http/http-3.png)
 
 #### 四、 URL与URI
 
-![](./images/http/http-4.png)
+![ URL与URI](../images/http/http-4.png)
 
 1. URI：统一资源标识符，用来唯一标识一个资源，URI是个纯粹的句法结构，用于指定标识Web资源的字符串的各个不同部分，是一个集合的概念。
 
@@ -85,5 +85,5 @@ DNS查询具体过程：
 
 #### 知识网图
 
-![知识网图](./images/http/http-5.jpg)
+![知识网图](../images/http/http-5.jpg)
 
