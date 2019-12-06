@@ -12,7 +12,7 @@ weekly study summary
 
 ### 第二周 (11-28)
 
-  1. [排序算法.md](https://github.com/ACakeWeekly/weeklyStudy/blob/master/%E7%AC%AC%E4%BA%8C%E5%91%A8/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.md)
+  1. [排序算法](https://github.com/ACakeWeekly/weeklyStudy/blob/master/%E7%AC%AC%E4%BA%8C%E5%91%A8/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.md)
 
 ### 第三周 (12-3, 12-5)
   1. [二分查找](https://github.com/ACakeWeekly/weeklyStudy/blob/master/%E7%AC%AC%E4%B8%89%E5%91%A8/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE.md)
