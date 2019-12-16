@@ -23,3 +23,7 @@ weekly study summary
 
   4. [tcp三次握手协议](https://github.com/ACakeWeekly/weeklyStudy/blob/master/%E7%AC%AC%E4%B8%89%E5%91%A8/tcp%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%8D%8F%E8%AE%AE.md)
 
+### 第三周 (12-12, 12-17)
+
+  1. [单链表算法](https://github.com/ACakeWeekly/weeklyStudy/blob/master/%E7%AC%AC%E5%9B%9B%E5%91%A8/%E5%8D%95%E9%93%BE%E8%A1%A8%E7%AE%97%E6%B3%95.md)
+
