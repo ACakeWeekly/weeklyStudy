@@ -8,7 +8,7 @@ libuv 是一个专注于异步 I/O 的跨平台的程序库，它主要是用于
 * libUV: 提供 async I/O, 消息循环,是操作系统 API 层的一个抽象层.
 
 Nodejs通过c/c++ Bingings把js给V8进行解析，V8解析后交给Libuv进行async I/O操作。
-![Alt text](./images/Nodejs总体架构)
+![Alt text](../images/Nodejs总体架构)
 
 操作进入Libuv后,取决于所运行的平台,从下图中可以看到，libuv 主要部分都是和 I/O 相关的，主要包括网络 I/O 和文件 I/O，其中文件 I/O 和其他少部分功能(DNS函数、通过uv_queue_work()指定用户代码)基于线程池实现，网络 I/O 在 *nix 平台基于 uv__io_t（内部抽象的 I/O 观察者）实现，uv__io_t 又基于不同环境采用了不同的底层机制，网络 I/O 在 win 平台基于 IOCP 机制实现。
 ![Alt text](./images/libuv.png)
