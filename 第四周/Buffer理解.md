@@ -19,7 +19,7 @@ Buffer 是一个全局模块，不需要使用 `require("buffer")`
 
 ### Buffer对象
 
-> 在 Node.js v6.x 之后 new Buffer() 接口开始被废弃, 理由是参数类型不同会返回不同类型的 Buffer 对象, 所以当开发者没有正确校验参数或没有正确初始化 Buffer 对象的内容时, 以及不了解的情况下初始化 就会在不经意间向代码中引入安全性和可靠性问题.
+在 Node.js v6.x 之后 new Buffer() 接口开始被废弃, 理由是参数类型不同会返回不同类型的 Buffer 对象, 所以当开发者没有正确校验参数或没有正确初始化 Buffer 对象的内容时, 以及不了解的情况下初始化 就会在不经意间向代码中引入安全性和可靠性问题.
 
 接口 | 用途
 ---- | ----
@@ -29,15 +29,15 @@ Buffer.allocUnsafe()	| 创建一个未初始化的 Buffer 对象
 
 ### Buffer内存分配机制
 
-> Buffer是一个典型的javascript与C++结合的模块，与性能有关的用C++来实现，javascript 负责衔接和提供接口。Buffer所占的内存不是V8堆内存，是独立于V8堆内存之外的内存，通过C++层面实现内存申请（可以说真正的内存是C++层面提供的）、javascript 分配内存（可以说JavaScript层面只是使用它）
+Buffer是一个典型的javascript与C++结合的模块，与性能有关的用C++来实现，javascript 负责衔接和提供接口。Buffer所占的内存不是V8堆内存，是独立于V8堆内存之外的内存，通过C++层面实现内存申请（可以说真正的内存是C++层面提供的）、javascript 分配内存（可以说JavaScript层面只是使用它）
 
-> 因为处理大量的字节数据不能采用需要一点内存就向操作系统申请一点内存的方式，这可能造成大量的内存申请的系统调用，对操作系统有一定压力。
+因为处理大量的字节数据不能采用需要一点内存就向操作系统申请一点内存的方式，这可能造成大量的内存申请的系统调用，对操作系统有一定压力。
 
-> Node在内存的使用上应用的是在C++层面申请内存，在js中分配内存的策略。  
-> node采用了slab的分配机制，slab其实就是一块申请好的固定内存区域，它有3种状态：
-> 1. full：完全分配状态  
-> 2. partial：部分分配状态  
-> 3. empty：没有被分配状态  
+Node在内存的使用上应用的是在C++层面申请内存，在js中分配内存的策略。  
+node采用了slab的分配机制，slab其实就是一块申请好的固定内存区域，它有3种状态：
+1. full：完全分配状态  
+2. partial：部分分配状态  
+3. empty：没有被分配状态  
 
 
 [**function allocate(size)**](https://github.com/nodejs/node/blob/503900b4633a541ecbebc159487f775c2669f54d/lib/buffer.js#L385) 
@@ -70,16 +70,17 @@ function allocate(size) {
 ![](https://user-gold-cdn.xitu.io/2019/7/16/16bfa9c8e4af644f?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 
 
-> 从分配策略中可以看出，源码直接看来就是以8KB作为界限，如果写入的数据大于8KB一半的话直接则直接去分配内存，如果小于4KB的话则从当前分配池里面判断是否够空间放下当前存储的数据，如果不够则重新去申请8KB的内存空间，把数据存储到新申请的空间里面，如果足够写入则直接写入数据到内存空间里面。
+从分配策略中可以看出，源码直接看来就是以8KB作为界限，如果写入的数据大于8KB一半的话直接则直接去分配内存，如果小于4KB的话则从当前分配池里面判断是否够空间放下当前存储的数据，如果不够则重新去申请8KB的内存空间，把数据存储到新申请的空间里面，如果足够写入则直接写入数据到内存空间里面。
 
-> 看内存分配策略图，如果当前存储了2KB的数据，后面要存储5KB大小数据的时候分配池判断所需内存空间大于4KB，则会去重新申请内存空间来存储5KB数据并且分配池的当前偏移指针也是指向新申请的内存空间，这时候就之前剩余的6KB(8KB-2KB)内存空间就会被浪费
+看内存分配策略图，如果当前存储了2KB的数据，后面要存储5KB大小数据的时候分配池判断所需内存空间大于4KB，则会去重新申请内存空间来存储5KB数据并且分配池的当前偏移指针也是指向新申请的内存空间，这时候就之前剩余的6KB(8KB-2KB)内存空间就会被浪费
 
-> 如果需要超过8KB的Buffer对象，将会直接分配一个SlowBuffer对象作为基础单元，这个基础单元将会被这个大Buffer对象独占
+如果需要超过8KB的Buffer对象，将会直接分配一个SlowBuffer对象作为基础单元，这个基础单元将会被这个大Buffer对象独占
 
-> 此外，Buffer单次的内存分配也有限制，而这个限制根据不同操作系统而不同  
-> buffer.constants.MAX_LENGTH 
-> 1. 对于32位的操作系统，值为(2^30)-1 (~1GB)
-> 2. 对于64位操作系统，值为 (2^31)-1 (~2GB).
+此外，Buffer单次的内存分配也有限制，而这个限制根据不同操作系统而不同  
+
+`buffer.constants.MAX_LENGTH`
+1. 对于32位的操作系统，值为(2^30)-1 (~1GB)
+2. 对于64位操作系统，值为 (2^31)-1 (~2GB).
 
 
 ### Buffer与字符编码
@@ -163,11 +164,12 @@ function func2() {
 // 窗前明月光，疑是地上霜
 ```
 
-> `data += chunk;` 等价于 `data = data.toString() + chunk.toString();`  
-> `buf.toString()`，默认编码：'utf8'
+`data += chunk;` 等价于 `data = data.toString() + chunk.toString();`  
+`buf.toString()`，默认编码：'utf8'
 
 参考：
 1. https://www.cnblogs.com/Ruth92/p/6132799.html
-2. https://www.cnblogs.com/Ruth92/p/6132799.html
 3. https://juejin.im/post/5d2db6d9f265da1bcc1975d7
 4. https://nodejs.org/api/buffer.html#buffer_buffer
+5. https://github.com/ElemeFE/node-interview/blob/master/sections/zh-cn/io.md#buffer
+6. https://segmentfault.com/a/1190000018850117
