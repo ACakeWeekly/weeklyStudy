@@ -467,3 +467,5 @@ void uv_stop(uv_loop_t* loop) {
 ```
 调用 uv_stop 后，事件循环同样无法进入，程序退出。
 
+参考：
+> https://blog.5udou.cn/blog/nodejsShen-Ru-Xue-Xi-Xi-Lie-Zhi-libuvJi-Chu-Pian-Er-87
