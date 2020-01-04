@@ -7,14 +7,15 @@
 MDN 介绍如下：
 > Notifications API 允许网页或应用程序在系统级别发送在页面外部显示的通知;这样即使应用程序空闲或在后台，Web应用程序也会向用户发送信息。
 
-详情介绍信息请查看👇参考链接👇，在日常浏览网页时，常见的新闻、视频网站使用到 Notifications API 向用户推送新的订阅内容。
+在日常浏览网页时，常见的新闻、视频网站使用到 Notifications API 向用户推送新的订阅内容。
 
 想要显示一条通知，需要经过用户同意才行。
 
 - **Notification.requestPermission()**
 
 该方法会使浏览器出现是否允许通知的提示，显示如下:
-![XXX]()
+
+![XXX](../images/web-notification.jpg)
 
 最新的具体语法如下，基于promise的语法
 
@@ -77,7 +78,7 @@ Notification.requestPermission().then(function(permission) { ... });
 
 判断当前媒体是否允许自动播放，可参考下面代码：
 
-```
+```javascript
 var promise = document.querySelector('video').play();
 
 if (promise !== undefined) {
@@ -91,7 +92,7 @@ if (promise !== undefined) {
 ```
 目前很多视频网站都是默认静音播放视频，提供一个按钮，让用户取消静音
 
-```
+```javascript
 <video id="video" muted autoplay>
 <button id="unmuteButton"></button>
 
@@ -105,13 +106,13 @@ if (promise !== undefined) {
 
 - 通过 `iframe` 加载一个空白的 `.mp3` 文件，仅会在第一次加载时触发自动播放并隐藏显示
 
-	```
+	```javascript
 	<iframe src="audio/empty.mp3" allow="autoplay" style="display:none" id="iframeAudio"></iframe>
     ```
  
 - 通过 `<video>` 加载要播放的音频，就可以轻松播放真正的音频文件
   
-  ```
+  ```javascript
   <audio id="player" autoplay>
        <source src="audio/source.mp3" type="audio/mp3">
   </audio>
@@ -125,7 +126,7 @@ if (promise !== undefined) {
 
 一个简单的效果，[Demo 演示](https://codesandbox.io/embed/heuristic-chandrasekhar-njpfp?fontsize=14&hidenavigation=1&theme=dark)
 
-```
+```javascript
 let audioContext = new AudioContext()
 
 let oscillator = audioContext.createOscillator()
@@ -137,9 +138,10 @@ setTimeOut(() => {
 }, 2000)
 ```
 上面的代码没有引入音频文件而播放了音频，下面学习基本概念和几个常用 API
-![]()
 
-从图片中看出，想要播放出声音🔊，首先得有一个**音频环境（Audio context）**, 然后是一个**音频输入源（Inputs）**, 再加上**处理程序（effects ）**, 然后是**音频的输出（Destination）**，也可以叫做目的地，最后是将它们所连接起来
+![Alt text](../images/audioContext.jpg)
+
+从图片中看出，想要播放出声音🔊，首先得有一个**音频环境（Audio context）**, 然后是一个**音频输入源（Inputs）**, 再加上**处理程序（Effects ）**, 然后是**音频的输出（Destination）**，也可以叫做目的地，最后是将它们所连接起来
 
 - **音频环境**需要创建一个AudioContext实例，可以叫做**音频上下文**，一切操作都在这个环境里进行
 
@@ -153,25 +155,70 @@ setTimeOut(() => {
 	```
 	let oscillator = audioContext.createOscillator()
 	```
-	`oscillator` 表示一个振荡器，它产生一个周期的波形信号（如正弦波）。它是一个 `AudioScheduledSourceNode` 音频处理模块， 这个模块会生成一个指定频率的波形信号。同时，可以自定义一些属性
+	`oscillator` 表示一个振荡器，振荡器有四个属性
+	- **`type`**: 震荡的波形，波形共有五种type，分别是 sine ( 正弦波)、square ( 方波)、sawtooth ( 锯齿波)、triangle ( 三角波) 和custom ( 自订)，每种波形在同样的频率下，会产生不同的声音
+	-  **`frequency `**: 震荡的频率, 频率越高声音就越高
+	-  **`detune`**: 音高偏移微调，将原音的音分做些微移调，造成重叠的音色效果，也就是虽然是同一个音，但经过detune偏移，就变成了不同的声音
+	-  **`onended `**: 结束时会发生的事件, 监听事件，写法如: ```oscillator.onended = function(){do somting}```
+	
+	它产生一个周期的波形信号（如正弦波）。它是一个 `AudioScheduledSourceNode` 音频处理模块， 这个模块会生成一个指定频率的波形信号。同时，可以自定义一些属性
 	
 	```
-	oscillator.type = 'sine';   // 振荡器输出正弦波
+	oscillator.type = 'sine';   // 振荡器输出波形为正弦波
 	oscillator.frequency.value = 200;  // 振荡频率200Hz
 	```
--  **处理程序（effects ）** 也就是给音频加上各种音效
+-  **处理程序（effects ）** 对音频加以控制，给音频加上各种音效。
 
+	在知道如何利用Web Audio Api 发声之后，接着就是要来控制我们所发出来的声音，但是在我们要控制声音之前，必须要先了解「节点`AudioNode`」这个概念。在AudioContext 里，主要就是音乐节点的处理和控制，在「Effects」的阶段，在这个阶段我们就有许多的特殊节点模组( Nodes Modules )可以进行运算。
+	- 「**`GainNode`**音量节点」: 控制音量使用的
+	
+		```javascript
+      let audioContext = new AudioContext();
 
+      let oscillator1 = audioContext.createOscillator();
+      oscillator1.type = "square";
+      oscillator1.frequency.value = 440;
+      oscillator1.connect(audioContext.destination);
+      oscillator1.start(audioContext.currentTime);
+      oscillator1.stop(audioContext.currentTime + 2);
 
+      let oscillator2 = audioContext.createOscillator();
+      oscillator2.type = "square";
+      oscillator2.frequency.value = 440;
+      let gainNode = audioContext.createGain(); // 创建 gainNode
+      gainNode.gain.value = 0.3; // 设置音量
+      oscillator2.connect(gainNode); // 将声音连到 gainNode
+      gainNode.connect(audioContext.destination); // 播放 gainNode
+      oscillator2.start(audioContext.currentTime + 2);
+      oscillator2.stop(audioContext.currentTime + 4);
+		```
+      上面的例子，打开之后，会先听到两秒的标准音量，再来又会听到两秒变成原本音量0.3倍的声音。[点击Demo](https://codesandbox.io/embed/vibrant-sammet-ggxiw?fontsize=14hidenavigation=1&theme=dark)
+      
+      同时，上面例子中用的新东西 `currentTime`, `currentTime` 是从 `audioContext`这个实例创建时就会产生的时间，并且时间会不断的变化直到我们将AudioContext移除，因此我们利用 `currentTime`就可以确保声音播放的时间，两秒后播放，四秒后停止。
 
+	- 「**`DelayNode`**延时节点」: 控制延迟播放的
+
+      ![Alt text](../images/WebAudioDelayNode.png)
+
+    - **`StereoPannerNode`**立体节点」: 只针对在2D平面上的左右移动，实际就是控制左右声道
+
+      它也只有一个属性叫做`pan`，数值为-1到1，如果越接近-1，左边的声音就会越大声，右边就越小声，越接近1则反之，预设值为0也就是左右均等。    
 
 - Demo
+  
+  利用 实现的俩个不错的项目
+  - [音频可视化](http://liazm.com/audio)
+  - [实现一个基本的钢琴🎹](https://codepen.io/noogn/pen/LAiDz)
+
 
 ## 总结
 ### 3.1 一句话总结
+虽然正常开发中很少用到上面介绍的 API，全当熟悉认识下
 
 ### 3.2 参考链接
 - [MDN Notifications API](https://developer.mozilla.org/zh-CN/docs/Web/API/notification/Using_Web_Notifications)
 - [MDN AudioContext API](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext)
 - [MP3空白Video 仓库](https://github.com/anars/blank-audio)
+- [初探Web Audio API系列篇](https://www.oxxostudio.tw/articles/201509/web-audio-api.html)
+- [AudioContext + canvas实现音频可视化](https://juejin.im/post/5bffa17ef265da612e285b66)
 
